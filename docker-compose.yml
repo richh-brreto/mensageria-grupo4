@@ -1,2 +1,49 @@
+version: '3.8'
+
 services:
-  
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  minha-aplicacao:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mensageria
+    ports:
+      - "6767:6767"
+    environment:
+      DB_HOST: host.docker.internal
+      DB_PORT: 3306
+      DB_NAME: boost
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+      RABBITMQ_EXCHANGE: escola.notificacao.exchange
+      RABBITMQ_QUEUE: escola.notificacao.queue
+      RABBITMQ_ROUTING_KEY: escola.notificacao.routing
+      MAIL_HOST: smtp.gmail.com
+      MAIL_PORT: 587
+      MAIL_USERNAME: seu-email@gmail.com
+      MAIL_PASSWORD: sua-senha-app
+      MAIL_SMTP_AUTH: true
+      MAIL_SMTP_STARTTLS: true
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

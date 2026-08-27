@@ -1,32 +1,53 @@
 package com.escola.notification.config;
 
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Configuração estrutural do RabbitMQ: fila, exchange e binding.
- * Valores podem ser parametrizados via application.properties.
- */
 @Configuration
 public class RabbitMQConfig {
 
+    @Value("${app.rabbitmq.queue.name}")
+    private String queueName;
+
+    @Value("${app.rabbitmq.exchange.name}")
+    private String exchangeName;
+
+    @Value("${app.rabbitmq.routing-key}")
+    private String routingKey;
+
     @Bean
-    public Queue notificationQueue() {
-        return new Queue(System.getProperty("rabbitmq.queue.notification", "notifications"), true);
+    public Queue aulaQueue() {
+        return new Queue(queueName, true, false, false);
     }
 
     @Bean
-    public TopicExchange notificationExchange() {
-        return new TopicExchange(System.getProperty("rabbitmq.exchange.notification", "notifications-exchange"));
+    public DirectExchange aulaExchange() {
+        return new DirectExchange(exchangeName, true, false);
     }
 
     @Bean
-    public Binding binding(Queue notificationQueue, TopicExchange notificationExchange) {
-        String routingKey = System.getProperty("rabbitmq.routing.key", "notification.#");
-        return BindingBuilder.bind(notificationQueue).to(notificationExchange).with(routingKey);
+    public Binding aulaBinding(Queue aulaQueue, DirectExchange aulaExchange) {
+        return BindingBuilder.bind(aulaQueue).to(aulaExchange).with(routingKey);
+    }
+
+    @Bean
+    public MessageConverter jsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
+
+    @Bean
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(jsonMessageConverter());
+        return rabbitTemplate;
     }
 }

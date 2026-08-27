@@ -1,21 +1,33 @@
 package com.escola.notification.adapters.mappers;
 
+import com.escola.notification.adapters.persistence.LessonEntity;
 import com.escola.notification.domain.entities.Lesson;
 import org.springframework.stereotype.Component;
 
-import java.time.OffsetDateTime;
-
-/**
- * Mapper para converter objetos/DTOs do banco e mensageria em entidades de domínio.
- * Mantém a camada de domínio livre de dependências externas.
- */
 @Component
 public class LessonMapper {
 
-    public LessonMapper() {
+    public Lesson toDomain(LessonEntity entity) {
+        return new Lesson(
+                entity.getId(),
+                entity.getDate(),
+                entity.getPresence(),
+                entity.getStatus(),
+                entity.getStartTime(),
+                entity.getEndTime(),
+                entity.getContractId()
+        );
     }
 
-    public Lesson toDomain(String id, OffsetDateTime scheduledAt, String teacherId) {
-        return new Lesson(id, scheduledAt, teacherId);
+    public LessonEntity toEntity(Lesson lesson) {
+        LessonEntity entity = new LessonEntity();
+        entity.setId(lesson.getId());
+        entity.setDate(lesson.getDate());
+        entity.setPresence(lesson.getPresence());
+        entity.setStatus(lesson.getStatus());
+        entity.setStartTime(lesson.getStartTime());
+        entity.setEndTime(lesson.getEndTime());
+        entity.setContractId(lesson.getContractId());
+        return entity;
     }
 }

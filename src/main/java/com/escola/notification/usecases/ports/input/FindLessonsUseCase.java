@@ -1,15 +1,11 @@
-package com.escola.notification.usecases.ports.output;
+package com.escola.notification.usecases.ports.input;
 
 import com.escola.notification.domain.entities.Lesson;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.List;
 
-public interface LessonRepositoryPort {
-
+public interface FindLessonsUseCase {
     List<Lesson> findAll();
-
     List<Lesson> findUpcomingLessons(LocalDate date);
-
 }
