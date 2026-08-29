@@ -1,7 +1,7 @@
 package com.escola.notification.adapters.rest;
 
 import com.escola.notification.domain.entities.Lesson;
-import com.escola.notification.usecases.ports.input.FindLessonsUseCase;
+import com.escola.notification.usecases.FindLessonsUseCase;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping({"/aulas", "/lessons"})
+@RequestMapping({"/aulas"})
 public class LessonController {
 
     private final FindLessonsUseCase findLessonsUseCase;

@@ -1,6 +1,6 @@
 package com.escola.notification.adapters.mail;
 
-import com.escola.notification.domain.model.Participante;
+import com.escola.notification.domain.model.Participant;
 import com.escola.notification.domain.ports.EmailServicePort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,12 +40,12 @@ public class JavaMailEmailService implements EmailServicePort {
     }
 
     @Override
-    public void enviarParaTodos(List<Participante> destinatarios, String assunto, String corpo) {
+    public void enviarParaTodos(List<Participant> destinatarios, String assunto, String corpo) {
         if (destinatarios == null || destinatarios.isEmpty()) {
             return;
         }
 
-        for (Participante destinatario : destinatarios) {
+        for (Participant destinatario : destinatarios) {
             if (destinatario != null && destinatario.email() != null && !destinatario.email().isBlank()) {
                 enviar(destinatario.email(), assunto, corpo);
             }

@@ -1,15 +1,15 @@
 package com.escola.notification.adapters.scheduler;
 
-import com.escola.notification.usecases.ProcessarNotificacoesAulaUseCase;
+import com.escola.notification.usecases.ProcessLessonNotificationsUseCase;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AulaNotificationScheduler {
+public class LessonNotificationScheduler {
 
-    private final ProcessarNotificacoesAulaUseCase processarNotificacoesAulaUseCase;
+    private final ProcessLessonNotificationsUseCase processarNotificacoesAulaUseCase;
 
-    public AulaNotificationScheduler(ProcessarNotificacoesAulaUseCase processarNotificacoesAulaUseCase) {
+    public LessonNotificationScheduler(ProcessLessonNotificationsUseCase processarNotificacoesAulaUseCase) {
         this.processarNotificacoesAulaUseCase = processarNotificacoesAulaUseCase;
     }
 

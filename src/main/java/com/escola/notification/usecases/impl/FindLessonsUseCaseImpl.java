@@ -1,8 +1,8 @@
-package com.escola.notification.adapters.usecase;
+package com.escola.notification.usecases.impl;
 
 import com.escola.notification.domain.entities.Lesson;
-import com.escola.notification.usecases.ports.input.FindLessonsUseCase;
-import com.escola.notification.usecases.ports.output.LessonRepositoryPort;
+import com.escola.notification.domain.ports.LessonRepositoryPort;
+import com.escola.notification.usecases.FindLessonsUseCase;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package com.escola.notification.usecases.ports.input;
+package com.escola.notification.usecases;
 
 import com.escola.notification.domain.entities.Lesson;
 

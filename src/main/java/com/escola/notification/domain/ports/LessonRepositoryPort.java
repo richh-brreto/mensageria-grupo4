@@ -1,9 +1,8 @@
-package com.escola.notification.usecases.ports.output;
+package com.escola.notification.domain.ports;
 
 import com.escola.notification.domain.entities.Lesson;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface LessonRepositoryPort {

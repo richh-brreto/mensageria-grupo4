@@ -1,6 +1,6 @@
 package com.escola.notification.adapters.rabbitmq;
 
-import com.escola.notification.domain.model.AulaNotificacaoEvent;
+import com.escola.notification.domain.model.LessonNotificationEvent;
 import com.escola.notification.domain.ports.EventPublisherPort;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,7 @@ public class RabbitMqEventPublisherAdapter implements EventPublisherPort {
     }
 
     @Override
-    public void publicar(AulaNotificacaoEvent evento) {
+    public void publicar(LessonNotificationEvent evento) {
         rabbitTemplate.convertAndSend(exchangeName, routingKey, evento);
     }
 }

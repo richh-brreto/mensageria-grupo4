@@ -1,8 +1,8 @@
 package com.escola.notification.adapters.persistence;
 
-import com.escola.notification.domain.model.AulaNotificacaoPayload;
-import com.escola.notification.domain.model.Participante;
-import com.escola.notification.domain.ports.AulaRepositoryPort;
+import com.escola.notification.domain.model.LessonNotificationPayload;
+import com.escola.notification.domain.model.Participant;
+import com.escola.notification.domain.ports.LessonNotificationRepositoryPort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class AulaRepositoryAdapter implements AulaRepositoryPort {
+public class LessonNotificationRepositoryAdapter implements LessonNotificationRepositoryPort {
 
     private static final String SQL = """
         SELECT
@@ -41,12 +41,12 @@ public class AulaRepositoryAdapter implements AulaRepositoryPort {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public AulaRepositoryAdapter(JdbcTemplate jdbcTemplate) {
+    public LessonNotificationRepositoryAdapter(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public List<AulaNotificacaoPayload> buscarAulasParaNotificacao() {
+    public List<LessonNotificationPayload> buscarAulasParaNotificacao() {
         return jdbcTemplate.query(SQL, (rs, rowNum) -> {
             Long aulaId = rs.getLong("id_aula");
             String dataAula = rs.getString("data_aula");
@@ -56,11 +56,11 @@ public class AulaRepositoryAdapter implements AulaRepositoryPort {
             String alunosNomes = rs.getString("alunos_nomes");
             String alunosEmails = rs.getString("alunos_emails");
 
-            Participante professor = professorEmail == null || professorEmail.isBlank()
+            Participant professor = professorEmail == null || professorEmail.isBlank()
                     ? null
-                    : new Participante(professorNome == null ? "Professor" : professorNome, professorEmail);
+                    : new Participant(professorNome == null ? "Professor" : professorNome, professorEmail);
 
-            return new AulaNotificacaoPayload(
+            return new LessonNotificationPayload(
                     aulaId,
                     dataAula,
                     horario,
@@ -70,21 +70,21 @@ public class AulaRepositoryAdapter implements AulaRepositoryPort {
         });
     }
 
-    private List<Participante> parseAlunos(String alunosNomes, String alunosEmails) {
+    private List<Participant> parseAlunos(String alunosNomes, String alunosEmails) {
         if (alunosNomes == null && alunosEmails == null) {
             return List.of();
         }
 
         List<String> nomes = splitValue(alunosNomes);
         List<String> emails = splitValue(alunosEmails);
-        List<Participante> alunos = new ArrayList<>();
+        List<Participant> alunos = new ArrayList<>();
 
         for (int i = 0; i < Math.max(nomes.size(), emails.size()); i++) {
             String nome = i < nomes.size() ? nomes.get(i) : "Aluno";
             String email = i < emails.size() ? emails.get(i) : null;
 
             if (email != null && !email.isBlank()) {
-                alunos.add(new Participante(nome, email));
+                alunos.add(new Participant(nome, email));
             }
         }
 

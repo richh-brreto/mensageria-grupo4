@@ -1,5 +1,5 @@
 package com.escola.notification.usecases;
 
-public interface ProcessarNotificacoesAulaUseCase {
+public interface ProcessLessonNotificationsUseCase {
     void processar();
 }

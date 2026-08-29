@@ -2,7 +2,7 @@ package com.escola.notification.adapters.persistence;
 
 import com.escola.notification.adapters.mappers.LessonMapper;
 import com.escola.notification.domain.entities.Lesson;
-import com.escola.notification.usecases.ports.output.LessonRepositoryPort;
+import com.escola.notification.domain.ports.LessonRepositoryPort;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;

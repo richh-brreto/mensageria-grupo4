@@ -16,6 +16,13 @@ services:
       timeout: 5s
       retries: 10
 
+  mailpit:
+    image: axllent/mailpit
+    container_name: mailpit
+    ports:
+      - "1025:1025" # Porta SMTP (Onde o Java envia o e-mail)
+      - "8025:8025" # Porta Web (Onde você lê o e-mail)
+
   minha-aplicacao:
     build:
       context: .
