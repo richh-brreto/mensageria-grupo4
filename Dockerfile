@@ -13,6 +13,4 @@ WORKDIR /app
 
 COPY --from=build /workspace/target/*.jar /app/app.jar
 
-EXPOSE 6767
-
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]

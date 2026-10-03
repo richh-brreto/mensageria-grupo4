@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: backend-mensageria
+  config:
+    import: "optional:file:.env[.properties]"
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    listener:
+      simple:
+        acknowledge-mode: auto
+        default-requeue-rejected: false
+        retry:
+          enabled: true
+          max-attempts: 3
+          initial-interval: 2s
+          multiplier: 2
+          max-interval: 10s
+
+app:
+  rabbitmq:
+    exchange: ${RABBITMQ_EXCHANGE:mensageria.aula.exchange}
+    fila: ${RABBITMQ_QUEUE:mensageria.aula.queue}
+    routing-key: ${RABBITMQ_ROUTING_KEY:mensageria.aula.routing}
+    dead-letter-exchange: ${RABBITMQ_DLX:mensageria.aula.dlx}
+    dead-letter-fila: ${RABBITMQ_DLQ:mensageria.aula.dlq}
+    dead-letter-routing-key: ${RABBITMQ_DLQ_ROUTING_KEY:mensageria.aula.dlq.routing}
+
+  whatsapp:
+    account-sid: ${TWILIO_ACCOUNT_SID:}
+    auth-token: ${TWILIO_AUTH_TOKEN:}
+    remetente: ${WHATSAPP_REMETENTE:}
+    messaging-service-sid: ${WHATSAPP_MESSAGING_SERVICE_SID:}
+    content-sid: ${WHATSAPP_CONTENT_SID:}
+
+logging:
+  level:
+    com.escola.mensageria: INFO
