@@ -17,7 +17,21 @@ public class WhatsAppConsumer {
     private final EnviarNotificacaoWhatsAppUseCase enviarNotificacaoUseCase;
 
     static {
+        if (ACCOUNT_SID == null || ACCOUNT_SID.isBlank() || AUTH_TOKEN == null || AUTH_TOKEN.isBlank()) {
+            throw new TwilioTokenNotConfiguredException(
+                    "Twilio token não configurado. Defina as variáveis de ambiente TWILIO_ACCOUNT_SID e TWILIO_AUTH_TOKEN antes de iniciar a aplicação."
+            );
+        }
+
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+    }
+
+    private static String readEnvOrProperty(String key) {
+        String value = System.getenv(key);
+        if (value == null || value.isBlank()) {
+            value = System.getProperty(key);
+        }
+        return value;
     }
 
     public WhatsAppConsumer(EnviarNotificacaoWhatsAppUseCase enviarNotificacaoUseCase) {
