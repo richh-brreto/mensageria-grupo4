@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   rabbitmq:
     image: rabbitmq:3-management
@@ -16,41 +14,28 @@ services:
       timeout: 5s
       retries: 10
 
-  mailpit:
-    image: axllent/mailpit
-    container_name: mailpit
-    ports:
-      - "1025:1025" # Porta SMTP (Onde o Java envia o e-mail)
-      - "8025:8025" # Porta Web (Onde você lê o e-mail)
-
-  minha-aplicacao:
+  mensageria:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: mensageria
-    ports:
-      - "6767:6767"
     environment:
-      DB_HOST: host.docker.internal
-      DB_PORT: 3306
-      DB_NAME: boost
-      DB_USERNAME: root
-      DB_PASSWORD: root
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
       RABBITMQ_USERNAME: guest
       RABBITMQ_PASSWORD: guest
-      RABBITMQ_EXCHANGE: escola.notificacao.exchange
-      RABBITMQ_QUEUE: escola.notificacao.queue
-      RABBITMQ_ROUTING_KEY: escola.notificacao.routing
-      MAIL_HOST: smtp.gmail.com
-      MAIL_PORT: 587
-      MAIL_USERNAME: seu-email@gmail.com
-      MAIL_PASSWORD: sua-senha-app
-      MAIL_SMTP_AUTH: true
-      MAIL_SMTP_STARTTLS: true
+      RABBITMQ_EXCHANGE: ${RABBITMQ_EXCHANGE:-mensageria.aula.exchange}
+      RABBITMQ_QUEUE: ${RABBITMQ_QUEUE:-mensageria.aula.queue}
+      RABBITMQ_ROUTING_KEY: ${RABBITMQ_ROUTING_KEY:-mensageria.aula.routing}
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN}
+      WHATSAPP_REMETENTE: ${WHATSAPP_REMETENTE:-}
+      WHATSAPP_CONTENT_SID: ${WHATSAPP_CONTENT_SID:-}
+      WHATSAPP_CONTENT_VARIABLES: ${WHATSAPP_CONTENT_VARIABLES:-}
+      WHATSAPP_PROVEDOR: ${WHATSAPP_PROVEDOR:-twilio}
+      EVOLUTION_BASE_URL: ${EVOLUTION_BASE_URL:-}
+      EVOLUTION_INSTANCIA: ${EVOLUTION_INSTANCIA:-}
+      EVOLUTION_API_KEY: ${EVOLUTION_API_KEY:-}
     depends_on:
       rabbitmq:
         condition: service_healthy
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
