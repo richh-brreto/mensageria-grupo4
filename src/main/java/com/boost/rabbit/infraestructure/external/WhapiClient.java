@@ -12,11 +12,16 @@ import java.io.IOException;
 @Component
 public class WhapiClient {
 
-    public void enviarMensagem() throws IOException {
+    public void enviarMensagem(String telefone, String mensagem) throws IOException {
         OkHttpClient client = new OkHttpClient();
 
+        if (telefone != null && !telefone.startsWith("55")) {
+            telefone = "55" + telefone;
+        }
+
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create("{\"to\":\"5511961113838\",\"body\":\"Falaaaaaa MIURAAAA\",\"typing_time\":0}", mediaType);
+        String mensagemEscapada = mensagem.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
+        RequestBody body = RequestBody.create("{\"to\":\"" + telefone + "\",\"body\":\"" + mensagemEscapada + "\",\"typing_time\":0}", mediaType);
         Request request = new Request.Builder()
           .url("https://gate.whapi.cloud/messages/text")
           .post(body)
@@ -26,5 +31,10 @@ public class WhapiClient {
           .build();
 
         Response response = client.newCall(request).execute();
+        if (response.isSuccessful()) {
+            System.out.println("Mensagem enviada com sucesso");
+        } else {
+            System.out.println("Erro ao enviar a mensagem: " + response.code());
+        }
     }
 }
