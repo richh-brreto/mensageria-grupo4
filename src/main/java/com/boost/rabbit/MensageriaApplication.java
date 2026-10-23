@@ -17,6 +17,7 @@ public class MensageriaApplication {
 
     @Bean
     CommandLineRunner enviarMensagemAoIniciar(WhapiClient whapiClient) {
-        return args -> whapiClient.enviarMensagem();
+        return args -> {
+        };
     }
 }
