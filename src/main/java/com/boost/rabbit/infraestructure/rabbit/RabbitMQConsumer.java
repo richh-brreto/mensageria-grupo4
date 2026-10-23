@@ -1,4 +1,4 @@
-package com.boost.rabbit.infraestructure.messaging;
+package com.boost.rabbit.infraestructure.rabbit;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
