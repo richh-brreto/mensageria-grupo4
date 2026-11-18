@@ -5,12 +5,16 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 @Component
 public class WhapiClient {
+
+    @Value("${whapi.authorization}")
+    private String authorization;
 
     public void enviarMensagem(String telefone, String mensagem) throws IOException {
         OkHttpClient client = new OkHttpClient();
@@ -27,7 +31,7 @@ public class WhapiClient {
           .post(body)
           .addHeader("accept", "application/json")
           .addHeader("content-type", "application/json")
-          .addHeader("authorization", "Bearer INgE2mruL7l03CRDn5aYPSEQqT7UKQMe")
+          .addHeader("authorization", authorization)
           .build();
 
         Response response = client.newCall(request).execute();

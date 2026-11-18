@@ -6,11 +6,14 @@ services:
     container_name: mensageria-grupo4
     ports:
       - "8081:8080"
+    env_file:
+      - .env
     environment:
       RABBITMQ_HOST: boost-rabbitmq   # Nome exato do container do RabbitMQ
       RABBITMQ_PORT: 5672
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-boost}
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-boost}
+      WHAPI_AUTHORIZATION: ${WHAPI_AUTHORIZATION:-}
     networks:
       - rede-boost
     restart: unless-stopped
